@@ -1,0 +1,38 @@
+---
+alwaysApply: true
+---
+# C++23 Standards and Best Practices
+
+## Language Standard
+- **Always use C++23 standard** in all CMakeLists.txt files
+- Set `CMAKE_CXX_STANDARD 23` and `CMAKE_CXX_STANDARD_REQUIRED ON`
+- Do not use compiler extensions: `CMAKE_CXX_EXTENSIONS OFF`
+
+## Error Handling
+- **Use `std::expected` for error semantics** instead of exceptions where appropriate
+- Prefer `std::expected<T, ErrorType>` over throwing exceptions for expected error conditions
+- Use `std::unexpected` to return errors
+- Example pattern:
+  ```cpp
+  auto function() -> std::expected<ResultType, ErrorType> {
+      if (error_condition) {
+          return std::unexpected(ErrorType::SomeError);
+      }
+      return result;
+  }
+  ```
+
+## Modern C++ Features
+- Use `auto` for type deduction where it improves readability
+- Prefer range-based for loops and ranges library
+- Use structured bindings for multiple return values
+- Leverage `constexpr` and `consteval` for compile-time computation
+- Use `[[nodiscard]]` for functions whose return values should not be ignored
+- Prefer smart pointers (`std::unique_ptr`, `std::shared_ptr`) over raw pointers
+- Use `std::span` for non-owning views into contiguous data
+
+## Code Style
+- Follow the project's `.clang-format` configuration
+- Use trailing return type syntax for complex return types or template functions
+- Keep header files minimal - forward declare when possible
+- Use `#pragma once` for header guards (simpler and more maintainable)

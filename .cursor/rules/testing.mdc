@@ -1,0 +1,65 @@
+---
+alwaysApply: true
+---
+# Testing Guidelines
+
+## Unit Testing Framework
+- **Use Google Test (GTest) for all unit tests**
+- Link tests with `GTest::gtest` and `GTest::gtest_main`
+- Use `gtest_discover_tests()` for automatic test discovery
+
+## Test Structure
+- Create test files with `test_` prefix (e.g., `test_calculator.cpp`)
+- Use test fixtures (derive from `::testing::Test`) for shared setup/teardown
+- Group related tests using the same test fixture
+- Name tests descriptively: `TEST_F(FixtureName, DescriptiveTestName)`
+
+## Test Coverage
+- **Write unit tests for all public APIs**
+- Test both success and failure paths
+- Test edge cases and boundary conditions
+- For `std::expected` returns, test both `.has_value()` and `.error()` cases
+
+## Test Organization
+```cpp
+/**
+ * @brief Test fixture for ClassName tests
+ */
+class ClassNameTest : public ::testing::Test {
+protected:
+    void SetUp() override {
+        // Setup code before each test
+    }
+    
+    void TearDown() override {
+        // Cleanup code after each test
+    }
+    
+    // Helper methods and shared test data
+};
+
+// ============================================================================
+// Feature Group Tests
+// ============================================================================
+
+TEST_F(ClassNameTest, TestDescription) {
+    // Arrange
+    // Act
+    // Assert
+    EXPECT_EQ(expected, actual);
+}
+```
+
+## Assertions
+- Use `EXPECT_*` for non-fatal assertions (test continues)
+- Use `ASSERT_*` for fatal assertions (test stops if fails)
+- Prefer `ASSERT_TRUE(result.has_value())` before accessing `result.value()`
+- Use descriptive failure messages when helpful:
+  ```cpp
+  EXPECT_EQ(expected, actual) << "Additional context about failure";
+  ```
+
+## Running Tests
+- All tests should be runnable via CTest: `ctest --output-on-failure`
+- Tests should be independent and not rely on execution order
+- Tests should clean up after themselves

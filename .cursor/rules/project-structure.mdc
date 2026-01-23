@@ -1,0 +1,94 @@
+---
+alwaysApply: true
+---
+# Project Structure Guidelines
+
+## Directory Layout
+The project follows this standard structure:
+
+```
+cpp-template/
+├── .cursor/
+│   └── rules/              # Cursor AI coding guidelines
+├── cmake/                  # CMake modules and configuration
+│   ├── CompilerWarnings.cmake
+│   ├── Sanitizers.cmake
+│   └── ClangTidy.cmake
+├── mylib/                  # Static library (example)
+│   ├── include/
+│   │   └── mylib/         # Public headers
+│   │       └── *.hpp
+│   ├── src/               # Implementation files
+│   │   └── *.cpp
+│   └── CMakeLists.txt
+├── src/                   # Application source
+│   └── main.cpp
+├── tests/                 # Unit tests
+│   ├── test_*.cpp
+│   └── CMakeLists.txt
+├── docs/                  # Documentation
+├── .clang-tidy           # Clang-tidy configuration
+├── .clang-format         # Code formatting rules (optional)
+├── CMakeLists.txt        # Root build configuration
+└── README.md
+```
+
+## Header vs Implementation Files
+- **Use `.hpp` extension for C++ headers** (distinguishes from C `.h` files)
+- **Use `.cpp` extension for implementation files**
+- Keep headers minimal to reduce compilation dependencies
+- **Always keep large imports in `.cpp` files, not `.hpp` files**
+  - This prevents polluting upstream dependencies
+  - Only include what's necessary in headers
+  - Use forward declarations when possible
+  - Move `#include` statements to implementation files
+
+## Include Organization
+In header files (`.hpp`):
+```cpp
+#pragma once
+
+// Forward declarations (prefer over includes)
+namespace other {
+    class SomeClass;
+}
+
+// Only include what's absolutely necessary in the header
+#include <memory>  // If using smart pointers in interface
+
+namespace mylib {
+    class MyClass {
+        // ...
+    };
+}
+```
+
+In implementation files (`.cpp`):
+```cpp
+#include "mylib/MyClass.hpp"
+
+// Include all the heavy dependencies here
+#include <algorithm>
+#include <vector>
+#include <string>
+#include <format>
+#include "other/SomeClass.hpp"
+
+namespace mylib {
+    // Implementation
+}
+```
+
+## Library Organization
+- Each library should have its own directory with:
+  - `include/libname/` for public headers
+  - `src/` for implementation files
+  - `CMakeLists.txt` for build configuration
+- Use `target_include_directories(target PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)`
+- This allows users to `#include "libname/header.hpp"`
+
+## CMake Configuration
+- Root `CMakeLists.txt` sets global standards and includes cmake modules
+- Each library/subdirectory has its own `CMakeLists.txt`
+- Use `add_subdirectory()` to include components
+- Apply compiler warnings, sanitizers, and clang-tidy globally after third-party dependencies

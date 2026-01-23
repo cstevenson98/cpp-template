@@ -1,0 +1,31 @@
+{
+    "name": "C++23 Development Environment",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "llvm-vs-code-extensions.vscode-clangd",
+                "ms-vscode.cmake-tools",
+                "twxs.cmake",
+                "ms-vscode.cpptools",
+                "matepek.vscode-catch2-test-adapter",
+                "cschlosser.doxdocgen"
+            ],
+            "settings": {
+                "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+                "cmake.configureOnOpen": true,
+                "clangd.path": "/usr/bin/clangd",
+                "clangd.arguments": [
+                    "--compile-commands-dir=${workspaceFolder}/build",
+                    "--background-index",
+                    "--clang-tidy",
+                    "--header-insertion=iwyu"
+                ]
+            }
+        }
+    },
+    "postCreateCommand": "bash .devcontainer/post-create.sh",
+    "remoteUser": "vscode"
+}

@@ -1,0 +1,57 @@
+# Build directories
+build/
+out/
+cmake-build-*/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+_deps/
+compile_commands.json
+
+# IDE specific
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Compiled Object files
+*.o
+*.obj
+*.so
+*.dylib
+*.dll
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+CppTemplate
+test_*
+!test_*.cpp
+
+# Cache
+.cache/
+.ccache/
+
+# Test results
+Testing/
+*.log
+
+# Sanitizer outputs
+*.san
+
+# Package managers
+.conan/
+vcpkg_installed/
+
+# Documentation
+docs/html/
+docs/latex/
+
