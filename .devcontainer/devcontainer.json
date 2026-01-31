@@ -15,6 +15,7 @@
         "vscode": {
             "extensions": [
                 "llvm-vs-code-extensions.vscode-clangd",
+                "xaver.clang-format",
                 "ms-vscode.cmake-tools",
                 "twxs.cmake",
                 "ms-vscode.cpptools",
@@ -36,6 +37,16 @@
                     "zsh": {
                         "path": "/bin/zsh"
                     }
+                },
+                "editor.formatOnSave": true,
+                "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+                "[cpp]": {
+                    "editor.formatOnSave": true,
+                    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+                },
+                "[c]": {
+                    "editor.formatOnSave": true,
+                    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
                 }
             }
         }

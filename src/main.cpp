@@ -13,15 +13,15 @@ auto main() -> int {
 
     std::cout << std::format("Calculator Demo - C++23 Template\n");
     std::cout << std::format("================================\n");
-    
+
     // Sanitizers are active (they only report when errors are detected)
 #ifdef __has_feature
-#if __has_feature(address_sanitizer)
+    #if __has_feature(address_sanitizer)
     std::cout << std::format("✓ AddressSanitizer: ENABLED\n");
-#endif
-#if __has_feature(undefined_behavior_sanitizer)
+    #endif
+    #if __has_feature(undefined_behavior_sanitizer)
     std::cout << std::format("✓ UndefinedBehaviorSanitizer: ENABLED\n");
-#endif
+    #endif
 #endif
     std::cout << std::format("\n");
 

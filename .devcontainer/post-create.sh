@@ -99,7 +99,7 @@ echo "==================================="
 
 # Configure and build the project
 if [ -f "CMakeLists.txt" ]; then
-    cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+    cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DRUN_FORMAT_FIX_ON_BUILD=ON
     cmake --build build
     
     echo ""

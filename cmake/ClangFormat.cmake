@@ -5,7 +5,7 @@
 
 # Find clang-format executable
 find_program(CLANG_FORMAT_EXECUTABLE
-    NAMES clang-format clang-format-19
+    NAMES clang-format
     DOC "Path to clang-format executable"
 )
 
@@ -157,10 +157,22 @@ function(enable_clang_format_globally)
         add_custom_target(format
             DEPENDS format-fix
         )
+        
+        # Option to run format-fix during build
+        option(RUN_FORMAT_FIX_ON_BUILD "Run clang-format fix during build" OFF)
+        
+        if(RUN_FORMAT_FIX_ON_BUILD)
+            # Add format-fix as a dependency to ALL (runs before compilation)
+            add_custom_target(run-format-fix ALL
+                DEPENDS format-fix
+            )
+            message(STATUS "clang-format auto-fix enabled for all builds (RUN_FORMAT_FIX_ON_BUILD=ON)")
+        endif()
 
         message(STATUS "clang-format targets created:")
         message(STATUS "  - format-check: Check formatting without modifying files")
         message(STATUS "  - format-fix (or 'format'): Automatically fix formatting")
+        message(STATUS "  - Set RUN_FORMAT_FIX_ON_BUILD=ON to auto-fix formatting on every build")
     else()
         message(WARNING "No source files found for clang-format")
     endif()

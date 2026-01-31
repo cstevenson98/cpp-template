@@ -28,7 +28,7 @@ class CalculatorTest : public ::testing::Test {
     static auto areClose(double a, double b) -> bool { return std::abs(a - b) < EPSILON; }
 };
 
-} // namespace
+}  // namespace
 
 // ============================================================================
 // Addition Tests
