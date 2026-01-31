@@ -22,10 +22,22 @@
                     "--background-index",
                     "--clang-tidy",
                     "--header-insertion=iwyu"
-                ]
+                ],
+                "terminal.integrated.defaultProfile.linux": "zsh",
+                "terminal.integrated.profiles.linux": {
+                    "zsh": {
+                        "path": "/bin/zsh"
+                    }
+                }
             }
         }
     },
     "postCreateCommand": "bash .devcontainer/post-create.sh",
-    "remoteUser": "vscode"
+    "remoteUser": "vscode",
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {
+            "version": "latest",
+            "ppa": false
+        }
+    }
 }

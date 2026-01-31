@@ -25,6 +25,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     sudo \
+    zsh \
     && rm -rf /var/lib/apt/lists/*
 
 # Add LLVM repository for latest Clang (using proper gpg key handling)
@@ -70,11 +71,11 @@ RUN if id -u $USER_UID >/dev/null 2>&1; then \
     existing_user=$(id -un $USER_UID) && \
     existing_group=$(id -gn $USER_UID) && \
     groupmod -n $USERNAME $existing_group && \
-    usermod -l $USERNAME -d /home/$USERNAME -m $existing_user; \
+    usermod -l $USERNAME -d /home/$USERNAME -m -s /bin/zsh $existing_user; \
     else \
     # Create new user
     groupadd --gid $USER_GID $USERNAME && \
-    useradd --uid $USER_UID --gid $USER_GID -m -s /bin/bash $USERNAME; \
+    useradd --uid $USER_UID --gid $USER_GID -m -s /bin/zsh $USERNAME; \
     fi && \
     echo "$USERNAME ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME && \
     chmod 0440 /etc/sudoers.d/$USERNAME
@@ -90,16 +91,16 @@ ENV CXX=/usr/bin/clang++
 ENV CXXFLAGS="-stdlib=libc++"
 ENV LDFLAGS="-stdlib=libc++ -lc++abi"
 
-# Add version info to bashrc
-RUN echo 'echo "=== C++23 Development Environment ===" && \' >> /home/$USERNAME/.bashrc && \
-    echo 'echo "Clang: $(clang++ --version 2>/dev/null | head -n1 || echo \"Not found\")" && \' >> /home/$USERNAME/.bashrc && \
-    echo 'echo "CMake: $(cmake --version 2>/dev/null | head -n1 || echo \"Not found\")" && \' >> /home/$USERNAME/.bashrc && \
-    echo 'echo "clang-tidy: $(clang-tidy --version 2>/dev/null | head -n1 || echo \"Not found\")" && \' >> /home/$USERNAME/.bashrc && \
-    echo 'echo "====================================="' >> /home/$USERNAME/.bashrc
+# Add version info to zshrc
+RUN echo 'echo "=== C++23 Development Environment ===" && \' >> /home/$USERNAME/.zshrc && \
+    echo 'echo "Clang: $(clang++ --version 2>/dev/null | head -n1 || echo \"Not found\")" && \' >> /home/$USERNAME/.zshrc && \
+    echo 'echo "CMake: $(cmake --version 2>/dev/null | head -n1 || echo \"Not found\")" && \' >> /home/$USERNAME/.zshrc && \
+    echo 'echo "clang-tidy: $(clang-tidy --version 2>/dev/null | head -n1 || echo \"Not found\")" && \' >> /home/$USERNAME/.zshrc && \
+    echo 'echo "====================================="' >> /home/$USERNAME/.zshrc
 
 # Switch to non-root user
 USER $USERNAME
 WORKDIR /workspace
 
-CMD ["/bin/bash"]
+CMD ["/bin/zsh"]
 

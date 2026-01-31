@@ -5,6 +5,40 @@ echo "==================================="
 echo "Setting up C++23 Development Environment"
 echo "==================================="
 
+# Configure git if not already configured
+echo ""
+echo "Configuring git..."
+if ! git config --global user.name > /dev/null 2>&1; then
+    echo "Git user.name not set. Please configure git:"
+    echo "  git config --global user.name 'Your Name'"
+    echo "  git config --global user.email 'your.email@example.com'"
+else
+    echo "✓ Git already configured:"
+    echo "  User: $(git config --global user.name)"
+    echo "  Email: $(git config --global user.email)"
+fi
+
+# Install oh-my-zsh
+echo ""
+echo "Installing oh-my-zsh..."
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    echo "✓ oh-my-zsh installed successfully!"
+else
+    echo "✓ oh-my-zsh already installed"
+fi
+
+# Restore the version info to .zshrc (oh-my-zsh installation may have overwritten it)
+cat >> ~/.zshrc << 'EOF'
+
+# Development environment info
+echo "=== C++23 Development Environment ==="
+echo "Clang: $(clang++ --version 2>/dev/null | head -n1 || echo "Not found")"
+echo "CMake: $(cmake --version 2>/dev/null | head -n1 || echo "Not found")"
+echo "clang-tidy: $(clang-tidy --version 2>/dev/null | head -n1 || echo "Not found")"
+echo "====================================="
+EOF
+
 # Display tool versions
 echo ""
 echo "Installed Tools:"
