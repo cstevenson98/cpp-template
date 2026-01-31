@@ -5,10 +5,16 @@ echo "==================================="
 echo "Setting up C++23 Development Environment"
 echo "==================================="
 
-# Configure git if not already configured
+# Configure git from host if available
 echo ""
 echo "Configuring git..."
-if ! git config --global user.name > /dev/null 2>&1; then
+if [ -f "/tmp/.gitconfig-host" ]; then
+    # Copy host git config
+    cp /tmp/.gitconfig-host ~/.gitconfig
+    echo "✓ Git configuration copied from host:"
+    echo "  User: $(git config --global user.name)"
+    echo "  Email: $(git config --global user.email)"
+elif ! git config --global user.name > /dev/null 2>&1; then
     echo "Git user.name not set. Please configure git:"
     echo "  git config --global user.name 'Your Name'"
     echo "  git config --global user.email 'your.email@example.com'"
@@ -71,7 +77,7 @@ int main() {
 EOF
 
 # Compile and run the test
-if clang++-19 -std=c++23 -stdlib=libc++ /tmp/test_expected.cpp -o /tmp/test_expected 2>/dev/null; then
+if clang++ -std=c++23 -stdlib=libc++ /tmp/test_expected.cpp -o /tmp/test_expected 2>/dev/null; then
     if /tmp/test_expected; then
         echo "✓ C++23 std::expected verification passed!"
     else
@@ -93,7 +99,7 @@ echo "==================================="
 
 # Configure and build the project
 if [ -f "CMakeLists.txt" ]; then
-    cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=clang-19 -DCMAKE_CXX_COMPILER=clang++-19
+    cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
     cmake --build build
     
     echo ""

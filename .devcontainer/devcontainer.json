@@ -3,6 +3,14 @@
     "build": {
         "dockerfile": "Dockerfile"
     },
+    "initializeCommand": "bash .devcontainer/pre-init.sh",
+    "mounts": [
+        {
+            "source": "${localEnv:HOME}/.gitconfig",
+            "target": "/tmp/.gitconfig-host",
+            "type": "bind"
+        }
+    ],
     "customizations": {
         "vscode": {
             "extensions": [
